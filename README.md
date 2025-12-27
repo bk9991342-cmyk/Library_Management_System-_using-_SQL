@@ -95,3 +95,9 @@ CREATE TABLE return_status (
     FOREIGN KEY (return_book_isbn) REFERENCES books(isbn)
 );
 ```
+
+2.CRUD Operations:
+- Create: Inserted sample records into the books table to populate initial data.
+- Read: Retrieved and displayed data from multiple tables using SELECT queries for analysis and verification.
+- Update: Modified existing records in the employees table to reflect updated information.
+- Delete: Removed records from the members table when no longer required, ensuring accurate and up-to-date data.
