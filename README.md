@@ -301,10 +301,39 @@ GROUP BY b.branch_id, b.manager_id;
 
 SELECT * FROM branch_reports;
 ```
+**Task 16: CTAS: Create a Table of Active Members**
+Use the CREATE TABLE AS (CTAS) statement to create a new table active_members containing members who have issued at least one book in the last 2 months.
+```sql
 
+CREATE TABLE active_members
+AS
+SELECT * FROM members
+WHERE member_id IN (SELECT 
+                        DISTINCT issued_member_id   
+                    FROM issued_status
+                    WHERE 
+                        issued_date >= CURRENT_DATE - INTERVAL '2 month'
+                    )
+;
 
-
-
+SELECT * FROM active_members;
+```
+**Task 17: Find Employees with the Most Book Issues Processed**
+Write a query to find the top 3 employees who have processed the most book issues. Display the employee name, number of books processed, and their branch.
+```sql
+SELECT 
+    e.emp_name,
+    b.*,
+    COUNT(ist.issued_id) as no_book_issued
+FROM issued_status as ist
+JOIN
+employees as e
+ON e.emp_id = ist.issued_emp_id
+JOIN
+branch as b
+ON e.branch_id = b.branch_id
+GROUP BY 1, 2;
+```
 
 
 
