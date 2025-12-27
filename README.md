@@ -8,3 +8,8 @@ This project involves the design and implementation of a Library Management Syst
 - CRUD Operations: Implemented complete Create, Read, Update, and Delete operations to efficiently manage library data.
 - CTAS (Create Table As Select): Used CTAS to generate new tables directly from query results for reporting and analysis purposes.
 - Advanced SQL Queries: Developed complex SQL queries to retrieve insights, perform data analysis, and support library operations.
+
+## Project Structure
+1.Project Structure
+- Database Creation: Created a database named library_db to manage library-related data efficiently.
+- Table Creation: Designed and created tables for branches, employees, members, books, issue records, and return records, with appropriate columns and defined relationships to ensure data integrity.
