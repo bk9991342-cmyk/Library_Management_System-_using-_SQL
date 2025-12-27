@@ -278,8 +278,29 @@ BEGIN
 END;
 $$;
 ```
+**Task 15: Branch Performance Report**
+- Create a query that generates a performance report for each branch, showing the number of books issued, the number of books returned, and the total revenue generated from book rentals.
+```sql
+CREATE TABLE branch_reports AS
+SELECT 
+    b.branch_id,
+    b.manager_id,
+    COUNT(ist.issued_id) AS number_of_books_issued,
+    COUNT(rs.return_id) AS number_of_books_returned,
+    SUM(bk.rental_price) AS total_revenue
+FROM issued_status AS ist
+JOIN employees AS e
+    ON e.emp_id = ist.issued_emp_id
+JOIN branch AS b
+    ON e.branch_id = b.branch_id
+LEFT JOIN return_status AS rs
+    ON rs.issued_id = ist.issued_id
+JOIN books AS bk
+    ON ist.issued_book_isbn = bk.isbn
+GROUP BY b.branch_id, b.manager_id;
 
-
+SELECT * FROM branch_reports;
+```
 
 
 
