@@ -121,3 +121,36 @@ Task 3: Delete a Record from the Issued Status Table -- Objective: Delete the re
 DELETE FROM issued_status
 WHERE issued_id = 'IS121';
 ```
+Task 4: Retrieve All Books Issued by a Specific Employee -- Objective: Select all books issued by the employee with emp_id = 'E101'.
+```sql
+SELECT * FROM issued_status
+WHERE issued_emp_id = 'E101'
+```
+Task 5: List Members Who Have Issued More Than One Book -- Objective: Use GROUP BY to find members who have issued more than one book.
+```sql
+SELECT
+    issued_emp_id,
+    COUNT(*)
+FROM issued_status
+GROUP BY 1
+HAVING COUNT(*) > 1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
