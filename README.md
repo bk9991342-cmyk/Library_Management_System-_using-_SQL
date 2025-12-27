@@ -101,3 +101,5 @@ CREATE TABLE return_status (
 - Read: Retrieved and displayed data from multiple tables using SELECT queries for analysis and verification.
 - Update: Modified existing records in the employees table to reflect updated information.
 - Delete: Removed records from the members table when no longer required, ensuring accurate and up-to-date data.
+
+Problem 1. Create a New Book Record -- "978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.')"
