@@ -103,3 +103,10 @@ CREATE TABLE return_status (
 - Delete: Removed records from the members table when no longer required, ensuring accurate and up-to-date data.
 
 Problem 1. Create a New Book Record -- "978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.')"
+```sql
+INSERT INTO books(isbn, book_title, category, rental_price, status, author, publisher)
+VALUES
+('978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.');
+
+SELECT * FROM books;
+```
