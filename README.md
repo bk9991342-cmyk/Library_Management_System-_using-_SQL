@@ -145,7 +145,7 @@ JOIN books as b
 ON ist.issued_book_isbn = b.isbn
 GROUP BY b.isbn, b.book_title;
 ```
-** 4. Data Analysis & Findings **
+**4. Data Analysis & Findings** 
 The following SQL queries were used to address specific questions:
 Task 7. Retrieve All Books in a Specific Category:
 ```sql
