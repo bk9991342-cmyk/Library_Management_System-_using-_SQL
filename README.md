@@ -409,9 +409,56 @@ SELECT * FROM issued_status;
 
 SELECT * FROM books
 WHERE isbn = '978-0-375-41398-8';
-
-
-
+```
+**Task 20: Create Table As Select (CTAS) Objective**: Create a CTAS (Create Table As Select) query to identify overdue books and calculate fines.
+```sql
+CREATE TABLE overdue_books_report AS
+SELECT
+    ist.issued_id,
+    m.member_name,
+    b.book_title,
+    ist.issued_date,
+    COALESCE(rs.return_date, CURRENT_DATE) AS return_date,
+    GREATEST(
+        (COALESCE(rs.return_date, CURRENT_DATE) - ist.issued_date) - 14,
+        0
+    ) AS overdue_days,
+    GREATEST(
+        ((COALESCE(rs.return_date, CURRENT_DATE) - ist.issued_date) - 14) * 5,
+        0
+    ) AS fine_amount
+FROM issued_status AS ist
+JOIN members AS m
+    ON ist.issued_member_id = m.member_id
+JOIN books AS b
+    ON ist.issued_book_isbn = b.isbn
+LEFT JOIN return_status AS rs
+    ON ist.issued_id = rs.issued_id
+WHERE (COALESCE(rs.return_date, CURRENT_DATE) - ist.issued_date) > 14;
+```
+- Description: Write a CTAS query to create a new table that lists each member and the books they have issued but not returned within 30 days. The table should include: The number of overdue books. The total fines, with each day's fine calculated at $0.50. The number of books issued by each member. The resulting table should show: Member ID Number of overdue books Total fines.
+```sql
+CREATE TABLE member_overdue_report AS
+SELECT
+    ist.issued_member_id AS member_id,
+    COUNT(ist.issued_id) AS overdue_books_count,
+    SUM(
+        (CURRENT_DATE - ist.issued_date - 30) * 0.50
+    ) AS total_fines,
+    COUNT(ist.issued_id) AS total_books_issued
+FROM issued_status AS ist
+LEFT JOIN return_status AS rs
+    ON ist.issued_id = rs.issued_id
+WHERE rs.issued_id IS NULL
+  AND (CURRENT_DATE - ist.issued_date) > 30
+GROUP BY ist.issued_member_id;
+```
+## Reports
+- Database Schema: Designed detailed table structures with well-defined relationships to ensure data integrity and efficient management.
+- Data Analysis: Performed analytical queries to gain insights into book categories, employee salary distributions, member registration trends, and book issuance patterns.
+- Summary Reports: Generated aggregated reports highlighting high-demand books and evaluating employee performance for better decision-making.
+## Conclusion
+This project showcases the practical application of SQL skills in designing and managing a Library Management System. It covers database creation, data manipulation through CRUD operations, and advanced querying techniques, providing a strong foundation in structured data management and analytical reporting.
 
 
 
