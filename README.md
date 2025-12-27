@@ -145,8 +145,31 @@ JOIN books as b
 ON ist.issued_book_isbn = b.isbn
 GROUP BY b.isbn, b.book_title;
 ```
-
-
+** 4. Data Analysis & Findings **
+The following SQL queries were used to address specific questions:
+Task 7. Retrieve All Books in a Specific Category:
+```sql
+SELECT * FROM books
+WHERE category = 'Classic';
+```
+Task 8: Find Total Rental Income by Category:
+```sql
+SELECT 
+    b.category,
+    SUM(b.rental_price),
+    COUNT(*)
+FROM 
+issued_status as ist
+JOIN
+books as b
+ON b.isbn = ist.issued_book_isbn
+GROUP BY 1;
+```
+Task 9: List Members Who Registered in the Last 180 Days:
+```sql
+SELECT * FROM members
+WHERE reg_date >= CURRENT_DATE - INTERVAL '180 days';
+```
 
 
 
