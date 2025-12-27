@@ -201,7 +201,83 @@ return_status as rs
 ON rs.issued_id = ist.issued_id
 WHERE rs.return_id IS NULL;
 ```
+## Advanced SQL Operations
+Task 13: Identify Members with Overdue Books, 
+Write a query to identify members who have overdue books (assume a 30-day return period). Display the member's_id, member's name, book title, issue date, and days overdue.
+```sql
+SELECT 
+    ist.issued_member_id,
+    m.member_name,
+    bk.book_title,
+    ist.issued_date,
+    -- rs.return_date,
+    CURRENT_DATE - ist.issued_date as over_dues_days
+FROM issued_status as ist
+JOIN 
+members as m
+    ON m.member_id = ist.issued_member_id
+JOIN 
+books as bk
+ON bk.isbn = ist.issued_book_isbn
+LEFT JOIN 
+return_status as rs
+ON rs.issued_id = ist.issued_id
+WHERE 
+    rs.return_date IS NULL
+    AND
+    (CURRENT_DATE - ist.issued_date) > 30
+ORDER BY 1;
+```
+**Task 14: Update Book Status on Return**
+Write a query to update the status of books in the books table to "Yes" when they are returned (based on entries in the return_status table).
+```sql
+CREATE OR REPLACE PROCEDURE add_return_records(
+    p_return_id VARCHAR(10),
+    p_issued_id VARCHAR(10),
+    p_book_quality VARCHAR(10)
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_isbn VARCHAR(50);
+    v_book_name VARCHAR(80);
+BEGIN
+    -- Insert record into return_status table
+    INSERT INTO return_status (
+        return_id,
+        issued_id,
+        return_date,
+        return_book_isbn
+    )
+    SELECT
+        p_return_id,
+        p_issued_id,
+        CURRENT_DATE,
+        issued_book_isbn
+    FROM issued_status
+    WHERE issued_id = p_issued_id;
 
+    -- Fetch book details
+    SELECT
+        issued_book_isbn,
+        issued_book_name
+    INTO
+        v_isbn,
+        v_book_name
+    FROM issued_status
+    WHERE issued_id = p_issued_id;
+
+    -- Update book availability
+    UPDATE books
+    SET status = 'yes'
+    WHERE isbn = v_isbn;
+
+    -- Confirmation message
+    RAISE NOTICE 'Thank you for returning the book: %', v_book_name;
+
+END;
+$$;
+```
 
 
 
